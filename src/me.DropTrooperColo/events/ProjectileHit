@@ -1,0 +1,35 @@
+package me.DropTrooperColo.events;
+
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
+import org.bukkit.entity.Snowball;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
+
+import net.md_5.bungee.api.ChatColor;
+
+public class ProjectileHit implements Listener {
+	
+	@SuppressWarnings("deprecation")
+	@EventHandler
+	public static void onMiss(ProjectileHitEvent e) {
+		Projectile projectile = e.getEntity();
+		if (projectile instanceof Snowball) {
+			Location loc = projectile.getLocation();
+			Vector vec = projectile.getVelocity();
+			Location loc2 = new Location(loc.getWorld(), loc.getX()+vec.getX(), loc.getY()+vec.getY(), loc.getZ()+vec.getZ());
+			Snowball snowball = (Snowball) projectile;
+			Player player = (Player) snowball.getShooter();
+			ItemStack item = new ItemStack(Material.SNOW_BALL);
+			if (loc2.getBlock().getTypeId() != 0) {
+				player.sendMessage(ChatColor.BLUE + "[Snowball Tag]" + ChatColor.AQUA + " You Missed! Here have another try!");
+				player.getInventory().addItem(item);
+			}
+		}
+	}
+}
