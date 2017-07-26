@@ -1,0 +1,39 @@
+package me.DropTrooperColo.events;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Snowball;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+
+
+public class EntityDamageByEntity implements Listener {
+
+	@SuppressWarnings("deprecation")
+	@EventHandler (priority = EventPriority.HIGHEST)
+		public static void onEDE(EntityDamageByEntityEvent e) {
+			if (e.getDamager() instanceof Snowball) {
+				ItemStack item = new ItemStack(Material.SNOW_BALL);
+				Snowball snowball = (Snowball) e.getDamager();
+				Player hit = (Player) e.getEntity();
+				Player attacker = (Player) snowball.getShooter();
+				hit.sendTitle(ChatColor.RED + "" + ChatColor.BOLD + "You are it!", "");
+				hit.sendMessage(ChatColor.BLUE + "[Snowball Tag]" + ChatColor.AQUA + " You have been hit with a snowball by " + ChatColor.WHITE + attacker.getName());
+				hit.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 100, 2));
+				hit.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 100, 2));
+				attacker.sendMessage(ChatColor.BLUE + "[Snowball Tag]" + ChatColor.AQUA + ChatColor.AQUA + " You hit " + ChatColor.WHITE + hit.getName() + ChatColor.AQUA + " with a snowball!");
+				hit.getInventory().addItem(item);
+				hit.getInventory().setHelmet(new ItemStack(Material.SNOW_BLOCK));
+				attacker.getInventory().setHelmet(new ItemStack(Material.AIR));
+				Bukkit.broadcastMessage(ChatColor.BLUE + "[Snowball Tag] " + ChatColor.WHITE + hit.getName() + ChatColor.AQUA + " Is now it! Run away from them!");
+		} 
+	}
+	
+}
