@@ -1,0 +1,38 @@
+package me.DropTrooperColo.events;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.ItemStack;
+
+import me.DropTrooperColo.Main;
+import net.md_5.bungee.api.ChatColor;
+
+public class Join implements Listener {
+	
+	
+	@EventHandler
+	public static void onJoin(PlayerJoinEvent event) {
+		Player player = (Player) event.getPlayer();
+		ItemStack item = new ItemStack(Material.SNOW_BALL);
+		Main.online.add(player.getName());
+		player.sendMessage(ChatColor.BLUE + "=================================================================");
+		player.sendMessage(ChatColor.BLUE + "[Snowball Tag]" + ChatColor.AQUA + " Welcome to snowball tag!");
+		player.sendMessage(ChatColor.BLUE + "[Snowball Tag]" + ChatColor.AQUA + " The rules are simple!");
+		player.sendMessage(ChatColor.BLUE + "[Snowball Tag]" + ChatColor.AQUA + " If you have the snowball you are the tagger!");
+		player.sendMessage(ChatColor.BLUE + "[Snowball Tag]" + ChatColor.AQUA + " If you don't have the snowball run away from the person with the snowblock on their head!");
+		player.sendMessage(ChatColor.BLUE + "=================================================================");
+		if (Main.online.size() < 2) {
+		player.sendMessage(ChatColor.BLUE + "[Snowball Tag]" + ChatColor.RED + " There are not enough players online for the game to start!");
+		} if (Main.online.size() == 2) {
+		Bukkit.broadcastMessage(ChatColor.BLUE + "[Snowball Tag]" + ChatColor.RED + " The game has started!");
+		player.getInventory().addItem(item);
+		player.getInventory().setHelmet(new ItemStack(Material.SNOW_BLOCK));
+			} if (Main.online.size() > 2) {
+			player.sendMessage(ChatColor.BLUE + "[Snowball Tag]" + ChatColor.RED + " The game has already started!");
+			}
+	}
+}
